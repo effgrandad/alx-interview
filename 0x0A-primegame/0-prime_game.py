@@ -14,28 +14,23 @@ def isWinner(x, nums):
     
     max_num = max(nums)
 
-    # draw a list to mark prime numbers
-    is_prime = [True for _ in range(max(max_num + 1, 2))]
-    for prime_candidate in range(2, int(pow(max_num, 0.5)) + 1):
-        if not is_prime[prime_candidate]:
+    # create a list to mark prime numbers
+    
+    my_filter = [True for _ in range(max(max_num + 1, 2))]
+    for i in range(2, int(pow(max_num, 0.5)) + 1):
+        if not my_filter[i]:
             continue
-        for multiple in range(prime_candidate * prime_candidate,
-                              max_num + 1, prime_candidate):
-            is_prime[multiple] = False
-    is_prime[0] = is_prime[1] = False
-
-    # Count prime numbers up to each number
-    prime_counts = [0] * len(is_prime)
-    count = 0
-    for index, prime_status in enumerate(is_prime):
-        if prime_status:
-            count += 1
-        prime_counts[index] = count
-
+        for j in range(i * i, max_num + 1, i):
+            my_filter[j] = False
+    my_filter[0] = my_filter[1] = False
+    y = 0
+    for i in range(len(my_filter)):
+        if my_filter[i]:
+            y += 1
+        my_filter[i] = y
     player1 = 0
-    for num in nums:
-        player1 += prime_counts[num] % 2 == 1
-
+    for x in nums:
+        player1 += my_filter[x] % 2 == 1
     if player1 * 2 == len(nums):
         return None
     if player1 * 2 > len(nums):
